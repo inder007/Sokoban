@@ -78,4 +78,52 @@ export class GameState {
   get finalMap() {
     return this.finalLocationsMap;
   }
+
+  private isValidMove(
+    expectedPlayerLocation: ILocation,
+    direction: number[]
+  ): boolean {
+    const location: string = JSON.stringify(expectedPlayerLocation);
+    if (this.wallLocationsMap.has(location)) {
+      return false;
+    }
+    if (this.cargoLocationsMap.has(location)) {
+      const nextToBox: ILocation = {
+        xPos: expectedPlayerLocation.xPos + direction[0],
+        yPos: expectedPlayerLocation.yPos + direction[1],
+      };
+      const nextToBoxLocation = JSON.stringify(nextToBox);
+      if (
+        this.cargoLocationsMap.has(nextToBoxLocation) ||
+        this.wallLocationsMap.has(nextToBoxLocation)
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  move(direction: number[]): boolean {
+    const expectedPlayerLocation: ILocation = {
+      xPos: this.playerLocation.xPos + direction[0],
+      yPos: this.playerLocation.yPos + direction[1],
+    };
+
+    if (!this.isValidMove(expectedPlayerLocation, direction)) {
+      return false;
+    }
+
+    this.playerLocation.xPos += direction[0];
+    this.playerLocation.yPos += direction[1];
+    const expectedPlayerLocationString = JSON.stringify(expectedPlayerLocation);
+    const cargo = this.cargoLocationsMap.get(expectedPlayerLocationString);
+    if (cargo === undefined) {
+      return true;
+    }
+    this.cargoLocationsMap.delete(expectedPlayerLocationString);
+    cargo.xPos += direction[0];
+    cargo.yPos += direction[1];
+    this.cargoLocationsMap.set(JSON.stringify(cargo), cargo);
+    return true;
+  }
 }

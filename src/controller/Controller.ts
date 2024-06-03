@@ -10,6 +10,10 @@ class Controller {
     private canvas: HTMLCanvasElement,
     private levelMetadata: LevelMetadata
   ) {
+    // Add event listener for keydown event
+    window.addEventListener("keydown", (event) =>
+      this.handleKeyboardEvent(event)
+    );
     const ctx = this.canvas.getContext("2d");
     if (ctx == null) {
       throw "ctx is null";
@@ -20,6 +24,31 @@ class Controller {
 
   start() {
     this.painter.paint();
+  }
+
+  // Method to handle keyboard events
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    const direction = this.getDirection(event.key);
+    if (direction[0] == 0 && direction[1] == 0) {
+      return;
+    }
+    if (this.gameState.move(direction)) {
+      this.painter.paint();
+    }
+  }
+
+  private getDirection(key: string): number[] {
+    var direction: number[] = [0, 0];
+    if (key == "a" || key == "ArrowLeft") {
+      direction = [-1, 0];
+    } else if (key == "w" || key == "ArrowUp") {
+      direction = [0, -1];
+    } else if (key == "d" || key == "ArrowRight") {
+      direction = [1, 0];
+    } else if (key == "s" || key == "ArrowDown") {
+      direction = [0, 1];
+    }
+    return direction;
   }
 }
 

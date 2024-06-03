@@ -15,8 +15,8 @@ export class Painter {
     this.paintEmpty();
     this.paintWall();
     this.paintCargo();
-    this.paintPlayer();
     this.paintFinalLocation();
+    this.paintPlayer();
   }
 
   private paintFloor() {
