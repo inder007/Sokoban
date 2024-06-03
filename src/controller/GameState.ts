@@ -1,5 +1,6 @@
 import { Cargo } from "../model/Cargo";
 import { FinalLocation } from "../model/FinalLocation";
+import { GameMove } from "../model/GameMove";
 import { ILocation } from "../model/ILocation";
 import { LevelMetadata } from "../model/LevelMetadata";
 import { Player } from "../model/Player";
@@ -8,6 +9,7 @@ import { Wall } from "../model/Wall";
 export class GameState {
   private width: number;
   private height: number;
+  private reverseOperations: GameMove[] = new Array<GameMove>();
 
   // keeping everything as location string to object map for O(1) average access.
   private wallLocationsMap: Map<string, Wall> = new Map<string, Wall>();
@@ -113,17 +115,55 @@ export class GameState {
       return false;
     }
 
+    if (this.cargoLocationsMap.has(JSON.stringify(expectedPlayerLocation))) {
+      this.moveInternal(direction, true);
+    } else {
+      this.moveInternal(direction, false);
+    }
+    return true;
+  }
+
+  private moveInternal(direction: number[], moveBox: boolean) {
     this.playerLocation.xPos += direction[0];
     this.playerLocation.yPos += direction[1];
-    const expectedPlayerLocationString = JSON.stringify(expectedPlayerLocation);
+    if (!moveBox) {
+      return;
+    }
+    const expectedPlayerLocationString = JSON.stringify(this.playerLocation);
     const cargo = this.cargoLocationsMap.get(expectedPlayerLocationString);
-    if (cargo === undefined) {
-      return true;
+    if (cargo == undefined) {
+      this.reverseOperations.push({
+        xPos: -1 * direction[0],
+        yPos: -1 * direction[1],
+        moveBox: false,
+      });
+      return;
     }
     this.cargoLocationsMap.delete(expectedPlayerLocationString);
     cargo.xPos += direction[0];
     cargo.yPos += direction[1];
     this.cargoLocationsMap.set(JSON.stringify(cargo), cargo);
+    this.reverseOperations.push({
+      xPos: -1 * direction[0],
+      yPos: -1 * direction[1],
+      moveBox: true,
+    });
+  }
+
+  isGameFinished(): boolean {
+    for (let location of this.cargoLocationsMap.keys()) {
+      if (!this.finalLocationsMap.has(location)) {
+        return false;
+      }
+    }
     return true;
+  }
+
+  undo() {
+    const gameMove = this.reverseOperations.pop();
+    if (gameMove == undefined) {
+      return;
+    }
+    this.moveInternal([gameMove.xPos, gameMove.yPos], gameMove.moveBox);
   }
 }

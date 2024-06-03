@@ -14,12 +14,21 @@ class Controller {
     window.addEventListener("keydown", (event) =>
       this.handleKeyboardEvent(event)
     );
+
+    document
+      .getElementById("undo")
+      ?.addEventListener("click", () => this.undo());
     const ctx = this.canvas.getContext("2d");
     if (ctx == null) {
       throw "ctx is null";
     }
     this.gameState = new GameState(this.levelMetadata);
     this.painter = new Painter(ctx, this.gameState);
+  }
+
+  private undo() {
+    this.gameState.undo();
+    this.painter.paint();
   }
 
   start() {
@@ -34,6 +43,12 @@ class Controller {
     }
     if (this.gameState.move(direction)) {
       this.painter.paint();
+    }
+    const popup = document.getElementById("popup") as HTMLDivElement;
+    if (this.gameState.isGameFinished()) {
+      popup.style.display = "block";
+    } else {
+      popup.style.display = "none";
     }
   }
 
@@ -70,3 +85,7 @@ function initializeWithLevel(level: number = 1) {
 document.addEventListener("DOMContentLoaded", () => {
   initializeWithLevel();
 });
+
+document
+  .getElementById("reset-game")
+  ?.addEventListener("click", () => initializeWithLevel());
