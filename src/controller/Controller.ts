@@ -1,6 +1,7 @@
 import { LevelMetadata } from "../model/LevelMetadata";
 import { GameState } from "./GameState";
 import { Painter } from "./Painter";
+import images from "../resources/images.json";
 
 class Controller {
   private gameState: GameState;
@@ -23,6 +24,8 @@ class Controller {
       throw "ctx is null";
     }
     this.gameState = new GameState(this.levelMetadata);
+    console.log(this.gameState);
+
     this.painter = new Painter(ctx, this.gameState);
   }
 
@@ -76,6 +79,7 @@ function initializeWithLevel(level: number = 1) {
     const canvas: HTMLCanvasElement | null = document.getElementById(
       "game-canvas"
     ) as HTMLCanvasElement | null;
+    console.log(canvas);
     if (canvas == null) throw "Canvas not found";
     const controller = new Controller(canvas, levelMetadata);
     controller.start();
@@ -83,9 +87,16 @@ function initializeWithLevel(level: number = 1) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  Object.entries(images).forEach((entry) => {
+    const img = new Image();
+    img.src = entry[1];
+    img.onload = () => {
+      Painter.imagesMap.set(entry[0], img);
+    };
+  });
   initializeWithLevel();
-});
 
-document
-  .getElementById("reset-game")
-  ?.addEventListener("click", () => initializeWithLevel());
+  document
+    .getElementById("reset-game")
+    ?.addEventListener("click", () => initializeWithLevel());
+});

@@ -9,7 +9,7 @@ import { Wall } from "../model/Wall";
 export class GameState {
   private width: number;
   private height: number;
-  private reverseOperations: GameMove[] = new Array<GameMove>();
+  private gameMoves: GameMove[] = new Array<GameMove>();
 
   // keeping everything as location string to object map for O(1) average access.
   private wallLocationsMap: Map<string, Wall> = new Map<string, Wall>();
@@ -115,39 +115,28 @@ export class GameState {
       return false;
     }
 
-    if (this.cargoLocationsMap.has(JSON.stringify(expectedPlayerLocation))) {
-      this.moveInternal(direction, true);
-    } else {
-      this.moveInternal(direction, false);
-    }
-    return true;
-  }
-
-  private moveInternal(direction: number[], moveBox: boolean) {
     this.playerLocation.xPos += direction[0];
     this.playerLocation.yPos += direction[1];
-    if (!moveBox) {
-      return;
-    }
-    const expectedPlayerLocationString = JSON.stringify(this.playerLocation);
+    const expectedPlayerLocationString = JSON.stringify(expectedPlayerLocation);
     const cargo = this.cargoLocationsMap.get(expectedPlayerLocationString);
-    if (cargo == undefined) {
-      this.reverseOperations.push({
-        xPos: -1 * direction[0],
-        yPos: -1 * direction[1],
+    if (cargo == null) {
+      this.gameMoves.push({
+        xPos: direction[0],
+        yPos: direction[1],
         moveBox: false,
       });
-      return;
+      return true;
     }
     this.cargoLocationsMap.delete(expectedPlayerLocationString);
     cargo.xPos += direction[0];
     cargo.yPos += direction[1];
     this.cargoLocationsMap.set(JSON.stringify(cargo), cargo);
-    this.reverseOperations.push({
-      xPos: -1 * direction[0],
-      yPos: -1 * direction[1],
+    this.gameMoves.push({
+      xPos: direction[0],
+      yPos: direction[1],
       moveBox: true,
     });
+    return true;
   }
 
   isGameFinished(): boolean {
@@ -160,10 +149,29 @@ export class GameState {
   }
 
   undo() {
-    const gameMove = this.reverseOperations.pop();
-    if (gameMove == undefined) {
+    if (!this.gameMoves.length) {
       return;
     }
-    this.moveInternal([gameMove.xPos, gameMove.yPos], gameMove.moveBox);
+    const gameMove = this.gameMoves.pop();
+    if (gameMove == null) {
+      return;
+    }
+
+    if (gameMove.moveBox) {
+      const currBoxLocation = JSON.stringify({
+        xPos: this.playerLocation.xPos + gameMove.xPos,
+        yPos: this.playerLocation.yPos + gameMove.yPos,
+      });
+      const cargo = this.cargoLocationsMap.get(currBoxLocation);
+      if (cargo == null) {
+        return;
+      }
+      this.cargoLocationsMap.delete(currBoxLocation);
+      cargo.xPos -= gameMove.xPos;
+      cargo.yPos -= gameMove.yPos;
+      this.cargoLocationsMap.set(JSON.stringify(cargo), cargo);
+    }
+    this.playerLocation.xPos -= gameMove.xPos;
+    this.playerLocation.yPos -= gameMove.yPos;
   }
 }

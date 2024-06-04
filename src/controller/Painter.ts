@@ -1,8 +1,8 @@
-import images from "../resources/images.json";
 import { GameState } from "./GameState";
 
 export class Painter {
   private tileSize: number = 50;
+  public static imagesMap: Map<string, HTMLImageElement> = new Map();
 
   constructor(
     private ctx: CanvasRenderingContext2D,
@@ -20,12 +20,14 @@ export class Painter {
   }
 
   private paintFloor() {
-    const floor = new Image();
-    floor.src = images.floor;
+    const img = Painter.imagesMap.get("floor");
+    if (img == null) {
+      throw "floor image not found.";
+    }
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 9; j++) {
         this.ctx.drawImage(
-          floor,
+          img,
           i * this.tileSize,
           j * this.tileSize,
           this.tileSize,
@@ -36,8 +38,10 @@ export class Painter {
   }
 
   private paintWall() {
-    const img = new Image();
-    img.src = images.wall;
+    const img = Painter.imagesMap.get("wall");
+    if (img == null) {
+      throw "wall image not found.";
+    }
     for (let location of this.gameState.wallMap.values()) {
       this.ctx.drawImage(
         img,
@@ -50,11 +54,10 @@ export class Painter {
   }
 
   private paintEmpty() {
-    const img = new Image();
-    img.src = images.empty;
+    const img = Painter.imagesMap.get("empty");
     for (let location of this.gameState.emptyMap.values()) {
       this.ctx.drawImage(
-        img,
+        img!,
         location.xPos * this.tileSize,
         location.yPos * this.tileSize,
         this.tileSize,
@@ -64,11 +67,10 @@ export class Painter {
   }
 
   private paintCargo() {
-    const img = new Image();
-    img.src = images.cargo;
+    const img = Painter.imagesMap.get("cargo");
     for (let location of this.gameState.cargoMap.values()) {
       this.ctx.drawImage(
-        img,
+        img!,
         location.xPos * this.tileSize,
         location.yPos * this.tileSize,
         this.tileSize,
@@ -78,10 +80,9 @@ export class Painter {
   }
 
   private paintPlayer() {
-    const img = new Image();
-    img.src = images.player;
+    const img = Painter.imagesMap.get("player");
     this.ctx.drawImage(
-      img,
+      img!,
       this.gameState.player.xPos * this.tileSize,
       this.gameState.player.yPos * this.tileSize,
       this.tileSize,
@@ -90,14 +91,12 @@ export class Painter {
   }
 
   private paintFinalLocation() {
-    const img = new Image();
-    img.src = images.target;
-    const imageOnTarget = new Image();
-    imageOnTarget.src = images.cargo_on_target;
+    const img = Painter.imagesMap.get("target");
+    const imageOnTarget = Painter.imagesMap.get("cargo_on_target");
     for (let location of this.gameState.finalMap.values()) {
       if (this.gameState.cargoMap.has(JSON.stringify(location))) {
         this.ctx.drawImage(
-          imageOnTarget,
+          imageOnTarget!,
           location.xPos * this.tileSize,
           location.yPos * this.tileSize,
           this.tileSize,
@@ -105,7 +104,7 @@ export class Painter {
         );
       } else {
         this.ctx.drawImage(
-          img,
+          img!,
           location.xPos * this.tileSize,
           location.yPos * this.tileSize,
           this.tileSize,
