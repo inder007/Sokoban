@@ -6,40 +6,31 @@ import images from "../resources/images.json";
 class Controller {
   private gameState: GameState;
   private painter: Painter;
+  private uuid: number;
 
   constructor(
     private canvas: HTMLCanvasElement,
     private levelMetadata: LevelMetadata
   ) {
-    // Add event listener for keydown event
-    window.addEventListener("keydown", (event) =>
-      this.handleKeyboardEvent(event)
-    );
-
-    document
-      .getElementById("undo")
-      ?.addEventListener("click", () => this.undo());
     const ctx = this.canvas.getContext("2d");
     if (ctx == null) {
       throw "ctx is null";
     }
     this.gameState = new GameState(this.levelMetadata);
-    console.log(this.gameState);
-
     this.painter = new Painter(ctx, this.gameState);
   }
 
-  private undo() {
+  undo = () => {
     this.gameState.undo();
     this.painter.paint();
-  }
+  };
 
   start() {
     this.painter.paint();
   }
 
   // Method to handle keyboard events
-  handleKeyboardEvent(event: KeyboardEvent): void {
+  handleKeyboardEvent = (event: KeyboardEvent): void => {
     const direction = this.getDirection(event.key);
     if (direction[0] == 0 && direction[1] == 0) {
       return;
@@ -53,7 +44,7 @@ class Controller {
     } else {
       popup.style.display = "none";
     }
-  }
+  };
 
   private getDirection(key: string): number[] {
     var direction: number[] = [0, 0];
@@ -74,15 +65,29 @@ async function fetchLevelMetadata(level: number): Promise<LevelMetadata> {
   return import(`../resources/level_${level}.json`);
 }
 
+let resetGameFunction: Function | null;
 function initializeWithLevel(level: number = 1) {
+  resetGameFunction?.();
   fetchLevelMetadata(level).then((levelMetadata) => {
     const canvas: HTMLCanvasElement | null = document.getElementById(
       "game-canvas"
     ) as HTMLCanvasElement | null;
-    console.log(canvas);
     if (canvas == null) throw "Canvas not found";
     const controller = new Controller(canvas, levelMetadata);
+
+    // Add event listener for keydown event
+    window.addEventListener("keydown", controller.handleKeyboardEvent);
+
+    document.getElementById("undo")?.addEventListener("click", controller.undo);
+
     controller.start();
+    resetGameFunction = () => {
+      window.removeEventListener("keydown", controller.handleKeyboardEvent);
+
+      document
+        .getElementById("undo")
+        ?.removeEventListener("click", controller.undo);
+    };
   });
 }
 
