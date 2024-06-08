@@ -1,5 +1,5 @@
 import { LevelMetadata } from "../model/LevelMetadata";
-import { maps } from "../resources/map";
+import { maps } from "../resources/Map";
 
 export class Mapper {
   public static mapToLevelMetadata(level: number): LevelMetadata {

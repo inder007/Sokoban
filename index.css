@@ -11,8 +11,8 @@ body {
   /* height: 100vh; */
   margin: 0;
   /* background-color: #f0f0f0; */
-  /* background-color: #000000; */
-  background-image: url("src/resources/cool-background.jpg");
+  background-color: #ded6a1;
+  /* background-image: url("src/resources/cool-background.jpg"); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -23,7 +23,8 @@ body {
 
 canvas {
   border: 1px solid black;
-  margin: 20px 0;
+  margin: 20px 0px;
+  border: 0px;
 }
 
 .popup {
@@ -42,18 +43,20 @@ canvas {
 }
 
 .button {
-  background-color: #ff9966;
+  background-color: #ded6a1;
   min-width: 75px;
+  border-color: black;
 }
 
 .heading h1 {
-  color: #ff8c00;
+  color: #41280a;
   font-size: xxx-large;
   margin-bottom: auto;
 }
 
 select {
-  background-color: #ff9966;
+  background-color: #ded6a1;
+  border-color: black;
 }
 
 .game-board {
@@ -63,7 +66,7 @@ select {
 .arrow-button {
   display: inline-block;
   border: 0px;
-  color: orange;
+  color: #41280a;
   background-color: transparent;
   font-size: 50px;
   width: 100px;

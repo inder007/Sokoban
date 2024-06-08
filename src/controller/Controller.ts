@@ -3,7 +3,7 @@ import { GameState } from "./GameState";
 import { Painter } from "./Painter";
 import images from "../resources/images.json";
 import { Mapper } from "./Mapper";
-import { maps } from "../resources/map";
+import { maps } from "../resources/Map";
 
 class Controller {
   private gameState: GameState;
