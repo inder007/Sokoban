@@ -7,8 +7,8 @@ import { Player } from "../model/Player";
 import { Wall } from "../model/Wall";
 
 export class GameState {
-  private width: number;
-  private height: number;
+  width: number;
+  height: number;
   private gameMoves: GameMove[] = new Array<GameMove>();
 
   // keeping everything as location string to object map for O(1) average access.

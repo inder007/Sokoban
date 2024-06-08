@@ -9,11 +9,26 @@
   </head>
 
   <body>
-    <canvas width="400" height="450" id="game-canvas">
-      An alternative text describing what your canvas displays.
-    </canvas>
+    <div class="heading">
+      <h1>SOKOBAN Puzzle</h1>
+    </div>
+    <h3 style="color: #ffc400">
+      The classic Warehouse puzzle from Japan. 60 Levels.
+    </h3>
+    <div class="navbar">
+      <select name="Levels" id="levels">
+        <option value="1" selected>Level 1</option>
+      </select>
+      <button id="reset-game" class="button">Reset Game</button>
+      <button id="undo" class="button">Undo (u)</button>
+    </div>
+    <div class="game-board">
+      <button id="left-button" class="arrow-button">&#8249;</button>
+      <canvas width="400" height="450" id="game-canvas" tabindex="-1">
+        An alternative text describing what your canvas displays.
+      </canvas>
+      <button id="right-button" class="arrow-button">&#8250;</button>
+    </div>
     <div id="popup" class="popup">You have cleared the level</div>
-    <button id="reset-game" class="button">Reset Game</button>
-    <button id="undo" class="button">Undo</button>
   </body>
 </html>

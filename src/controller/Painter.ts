@@ -1,7 +1,7 @@
 import { GameState } from "./GameState";
 
 export class Painter {
-  private tileSize: number = 50;
+  tileSize: number = 35;
   public static imagesMap: Map<string, HTMLImageElement> = new Map();
 
   constructor(
@@ -24,8 +24,8 @@ export class Painter {
     if (img == null) {
       throw "floor image not found.";
     }
-    for (let i = 0; i < 8; i++) {
-      for (let j = 0; j < 9; j++) {
+    for (let i = 0; i < this.gameState.width; i++) {
+      for (let j = 0; j < this.gameState.height; j++) {
         this.ctx.drawImage(
           img,
           i * this.tileSize,

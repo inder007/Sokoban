@@ -1,11 +1,24 @@
+@font-face {
+  font-family: "game-font";
+  src: url("src/resources/PressStart2P-Regular.ttf");
+}
+
 body {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  /* height: 100vh; */
   margin: 0;
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
+  /* background-color: #000000; */
+  background-image: url("src/resources/cool-background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Ensure it covers the full viewport height */
+  width: 100vw; /* Ensure it covers the full viewport width */
+  font-family: "game-font";
 }
 
 canvas {
@@ -20,4 +33,48 @@ canvas {
   padding: 10px;
   display: none; /* Initially hidden */
   z-index: 10;
+}
+
+.navbar {
+  overflow: hidden;
+  /* background-color: #333; */
+  /* font-family: Arial; */
+}
+
+.button {
+  background-color: #ff9966;
+  min-width: 75px;
+}
+
+.heading h1 {
+  color: #ff8c00;
+  font-size: xxx-large;
+  margin-bottom: auto;
+}
+
+select {
+  background-color: #ff9966;
+}
+
+.game-board {
+  display: flex;
+}
+
+.arrow-button {
+  display: inline-block;
+  border: 0px;
+  color: orange;
+  background-color: transparent;
+  font-size: 50px;
+  width: 100px;
+  font-family: "game-font";
+  /* background-image: url("src/resources/next.jpg"); */
+}
+
+.arrow-button:hover {
+  /* opacity: 0.1; */
+  border: 5px;
+  border-color: antiquewhite;
+  color: white;
+  /* background-color: white; */
 }
