@@ -11,11 +11,11 @@ body {
   /* height: 100vh; */
   margin: 0;
   /* background-color: #f0f0f0; */
-  background-color: #ded6a1;
-  /* background-image: url("src/resources/cool-background.jpg"); */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  /* background-color: #ded6a1; */
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QECFRYQ7t+AQgAAAMdJREFUSMfNVkESgzAIjJ19hP7/3O/02Gt8hjcno4EsAWw5OQ6BzcJClu/nXW6213p+r9tWRqb4o3uACUr6o9jtxMvgwEQs0/2gk2jlSkzgCaR3BHiKpf86OPAtMXfLV0k2ZARtqwK/jO/laU8hhOsYJbc343EgBKaWwDRYZhJIamJSMs7w8NB1vlASr4NL1j9QsrMLMCyXFJdsB2So99Ea5BdZotI6eaQ4S/fh9fuFw/cuQuSqIIBnkTFLDVGzk52m4QsnXQcH0S9cj6Gju5gAAAAASUVORK5CYII=");
+  /* background-size: cover; */
+  /* background-position: center; */
+  /* background-repeat: no-repeat; */
   height: 100vh; /* Ensure it covers the full viewport height */
   width: 100vw; /* Ensure it covers the full viewport width */
   font-family: "game-font";
