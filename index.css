@@ -27,6 +27,10 @@ canvas {
   border: 0px;
 }
 
+canvas:focus {
+  outline: none;
+}
+
 .popup {
   position: absolute;
   background-color: white;
@@ -34,6 +38,7 @@ canvas {
   padding: 10px;
   display: none; /* Initially hidden */
   z-index: 10;
+  font-size: medium;
 }
 
 .navbar {
@@ -43,9 +48,10 @@ canvas {
 }
 
 .button {
-  background-color: #ded6a1;
+  /* background-color: #ded6a1; */
   min-width: 75px;
   border-color: black;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QECFR8PshU2/gAAACxJREFUSMftzTEBADAIACBd/yrW8TTLSugHBcjpiksvjgkEAoFAIBAIBIItH2VxAqFH3opfAAAAAElFTkSuQmCC");
 }
 
 .heading h1 {
@@ -55,7 +61,8 @@ canvas {
 }
 
 select {
-  background-color: #ded6a1;
+  /* background-color: #ded6a1; */
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QECFR8PshU2/gAAACxJREFUSMftzTEBADAIACBd/yrW8TTLSugHBcjpiksvjgkEAoFAIBAIBIItH2VxAqFH3opfAAAAAElFTkSuQmCC");
   border-color: black;
 }
 

@@ -11,7 +11,8 @@ class Controller {
 
   constructor(
     private canvas: HTMLCanvasElement,
-    private levelMetadata: LevelMetadata
+    private levelMetadata: LevelMetadata,
+    private level: number
   ) {
     const ctx = this.canvas.getContext("2d");
     if (ctx == null) {
@@ -48,6 +49,14 @@ class Controller {
     const popup = document.getElementById("popup") as HTMLDivElement;
     if (this.gameState.isGameFinished()) {
       popup.style.display = "block";
+      setTimeout(() => {
+        const dropDownContent = document.getElementById(
+          "levels"
+        ) as HTMLSelectElement;
+        popup.style.display = "none";
+        initializeWithLevel(this.level + 1);
+        dropDownContent.value = `${this.level + 1}`;
+      }, 2000);
     } else {
       popup.style.display = "none";
     }
@@ -78,7 +87,7 @@ function initializeWithLevel(level: number) {
   ) as HTMLCanvasElement | null;
   if (canvas == null) throw "Canvas not found";
   canvas.focus();
-  const controller = new Controller(canvas, levelMetadata);
+  const controller = new Controller(canvas, levelMetadata, level);
 
   // Add event listener for keydown event
   window.addEventListener("keydown", controller.handleKeyboardEvent);
