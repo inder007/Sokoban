@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite serve",
-    "build": "vite build",
+    "build": "vite build --base /Sokoban/",
     "preview": "vite preview"
   },
   "devDependencies": {
